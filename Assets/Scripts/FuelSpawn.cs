@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FuelSpawn : MonoBehaviour
 {
@@ -8,13 +6,14 @@ public class FuelSpawn : MonoBehaviour
     public GameObject fuelContainer;
     public EdgeCollider2D track;
     public float spawnDistance;
-    public Transform car;
+    Transform car;
     Transform m_referenceFuel;
     
     
     // Start is called before the first frame update
     void Start()
     {
+        car = CarController.instance.transform;
         Spawn(track, car);
     }
 

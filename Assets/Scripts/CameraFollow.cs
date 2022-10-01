@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
@@ -23,13 +21,14 @@ public class CameraFollow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        speed = GameObject.FindObjectOfType<CarController>().speed;
+        speed = CarController.instance.speed;
         CameraSize();
         CameraOffset();
     }
 
     void CameraOffset()
     {
+        //following the car with offset
         customOffset = new Vector3(offset.x + speed.x / 2, offset.y, offset.z);
         targetPos = followPlayer.position + customOffset;
         transform.position = Vector3.Lerp(transform.position, targetPos, followSpeed * Time.deltaTime);
@@ -37,6 +36,8 @@ public class CameraFollow : MonoBehaviour
 
     void CameraSize()
     {
+        //Controlling the orthographic size of camera
+        // speeding up will increase the orthographic size
         targetSize = cameraSize + Mathf.Abs(speed.magnitude)/6;
 
         Camera.main.orthographicSize = Mathf.SmoothDamp(Camera.main.orthographicSize, targetSize, ref changeSizeSpeed, 0.5f);

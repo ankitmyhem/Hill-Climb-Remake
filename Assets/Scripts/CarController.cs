@@ -13,14 +13,23 @@ public class CarController : MonoBehaviour
     public Text scoreText;
     [HideInInspector] public bool isMovingForward = false;
     [HideInInspector] public bool isMovingBackward = false;
+    Rigidbody2D rb;
+
+    public static CarController instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
         currentFuel = fuel;
+        rb = GetComponent<Rigidbody2D>();
     }
     void Update()
     {
-        speed = GetComponent<Rigidbody2D>().velocity;
+        speed = rb.velocity;
         
     }
     private void FixedUpdate()
@@ -34,16 +43,18 @@ public class CarController : MonoBehaviour
         
     }
 
-    void RotateCar()
+    void RotateCar()    //This Rotates the car on land and in air
     {
         if(currentFuel > 0)
         {
-            if (isMovingBackward || Input.GetKey(KeyCode.LeftArrow))
+            if (isMovingBackward || Input.GetKey(KeyCode.LeftArrow))     //isMovingBackward is used for button Inputs
             {
+                //Clockwise rotation
                 GetComponent<Rigidbody2D>().AddTorque(-rotationalTorque);
             }
-            if (isMovingForward || Input.GetKey(KeyCode.RightArrow))
+            if (isMovingForward || Input.GetKey(KeyCode.RightArrow))    //isMovingForward is used for button Inputs
             {
+                //anticlockwise rotation
                 GetComponent<Rigidbody2D>().AddTorque(rotationalTorque);
             }
         }
@@ -54,7 +65,7 @@ public class CarController : MonoBehaviour
         if(collision.gameObject.tag == "Fuel")
         {
             Destroy(collision.gameObject);
-            currentFuel = fuel;
+            currentFuel = fuel;     //Refueling car
         }
     }
 }    
